@@ -1,16 +1,27 @@
-const data = {
-  counter: 0,
-  cps: 0,
-};
+//globals
 
-const upgradeData = {};
+let counter = 0;
+let upgradeDataLocal = [];
+let upgradePurchases = {};
+let timer;
 
-createUpgrades();
+document.getElementById("clicker").addEventListener("click", () => {
+  counter = counter + 1;
+  document.getElementById("counter").textContent = counter;
+});
 
-async function createUpgrades() {
+theAutomatedBit();
+
+async function theAutomatedBit() {
   const upgradeData = await getUpgrades();
+  setUpgradeDataLocal(upgradeData);
+
   makeUpgradeElements(upgradeData);
   upgradesClick();
+
+  console.log(upgradeDataLocal);
+
+  timer = setInterval(timerHandler, 1000);
 }
 
 async function getUpgrades() {
@@ -19,6 +30,10 @@ async function getUpgrades() {
   );
   const upgradeData = await response.json();
   return upgradeData;
+}
+
+function setUpgradeDataLocal(upgradeArr) {
+  upgradeDataLocal = upgradeArr;
 }
 
 function makeUpgradeElements(upgradeArr) {
@@ -47,17 +62,31 @@ function upgradesClick() {
   for (let div of upgradeDivs) {
     div.addEventListener("click", () => {
       let id = div.getAttribute("id");
-      if (id in upgradeData) {
-        upgradeData[id]++;
+      if (id in upgradePurchases) {
+        upgradePurchases[id]++;
       } else {
-        upgradeData[id] = 1;
+        upgradePurchases[id] = 1;
       }
-      localStorage.setItem("upgradesStored", JSON.stringify(upgradeData));
+      localStorage.setItem("upgradesStored", JSON.stringify(upgradePurchases));
     });
   }
 }
 
-resetButton.addEventListener("click", (event) => {
+function timerHandler() {
+  n = 0;
+  for (i = 1; i <= upgradeDataLocal.length; i++) {
+    if (i in upgradePurchases) {
+      n = n + upgradeDataLocal[i - 1].increase * upgradePurchases[i];
+    }
+  }
+  counter = counter + n;
+  document.getElementById("perSec").textContent = n;
+  document.getElementById("counter").textContent = counter;
+}
+
+resetButton.addEventListener("click", () => {
   localStorage.clear();
-  location.reload();
+  upgradePurchases = {};
+  document.getElementById("perSec").textContent = 0;
+  document.getElementById("counter").textContent = 0;
 });
