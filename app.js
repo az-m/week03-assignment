@@ -3,11 +3,14 @@ const data = {
   cps: 0,
 };
 
+const upgradeData = {};
+
 createUpgrades();
 
 async function createUpgrades() {
   const upgradeData = await getUpgrades();
   makeUpgradeElements(upgradeData);
+  upgradesClick();
 }
 
 async function getUpgrades() {
@@ -22,6 +25,7 @@ function makeUpgradeElements(upgradeArr) {
   upgradeArr.forEach((item, index) => {
     const el = document.createElement("div");
     el.setAttribute("class", "upgrade");
+    el.setAttribute("id", item.id);
     const section = document.getElementById("upgrades");
     section.appendChild(el);
 
@@ -37,3 +41,23 @@ function makeUpgradeElements(upgradeArr) {
     div.appendChild(pCost);
   });
 }
+
+function upgradesClick() {
+  const upgradeDivs = document.getElementById("upgrades").children;
+  for (let div of upgradeDivs) {
+    div.addEventListener("click", () => {
+      let id = div.getAttribute("id");
+      if (id in upgradeData) {
+        upgradeData[id]++;
+      } else {
+        upgradeData[id] = 1;
+      }
+      localStorage.setItem("upgradesStored", JSON.stringify(upgradeData));
+    });
+  }
+}
+
+resetButton.addEventListener("click", (event) => {
+  localStorage.clear();
+  location.reload();
+});
