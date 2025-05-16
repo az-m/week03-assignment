@@ -35,6 +35,9 @@ async function theAutomatedBit() {
   makeUpgradeElements(upgradeData);
   upgradesClick();
 
+  highlightPurchaseables();
+  showUpgradesCount();
+
   // runs all the per second stuff
   timer = setInterval(timerHandler, 1000);
 }
@@ -73,6 +76,7 @@ function makeUpgradeElements(upgradeArr) {
 
     div.appendChild(span);
 
+    // ditto the span
     const getSpanFromDom = div.querySelector("span");
 
     getSpanFromDom.appendChild(pName);
@@ -108,6 +112,8 @@ function upgradesClick() {
         );
         localStorage.setItem("counterStored", counter);
       }
+      highlightPurchaseables();
+      showUpgradesCount();
     });
   }
 }
@@ -126,14 +132,12 @@ function timerHandler() {
   localStorage.setItem("counterStored", counter);
 
   // we want to show the user which upgrades are available - we're also checking this every second
-  // I'll break this out into a separate function
+  // I'll break this out into a separate function because we want to use it immediately when a purchase is made too. And when the page loads.
   highlightPurchaseables();
-
-  // show how many of an upgrade is owned next to the upgrade item - I'll make a function for this too
-  showUpgradesCount();
 }
 
 function highlightPurchaseables() {
+  // change the class on the upgrade divs to show if you can buy them or not
   upgradeDataLocal.forEach((item) => {
     let el = document.getElementById(item.id);
     if (item.cost <= counter) {
@@ -149,6 +153,7 @@ function highlightPurchaseables() {
 }
 
 function showUpgradesCount() {
+  // display how many of each upgrade have been purchased next to the upgrade
   for (const [key, value] of Object.entries(upgradePurchases)) {
     const div = document.createElement("div");
     div.textContent = `${value}`;
@@ -165,14 +170,9 @@ function loadStorage() {
   // I want to load the local storage back in if it exists
   if (localStorage.getItem("counterStored")) {
     counter = Number(localStorage.getItem("counterStored"));
+    counterHolder.textContent = counter;
   }
   if (localStorage.getItem("upgradesStored")) {
     upgradePurchases = JSON.parse(localStorage.getItem("upgradesStored"));
   }
 }
-
-// document.getElementById("stopTimer").addEventListener("click", () => {
-//   //this is just to stop it running while I style things or just want it to stop. take it out later.
-//   clearInterval(timer);
-//   timer = null;
-// });
