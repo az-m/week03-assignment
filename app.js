@@ -5,11 +5,21 @@ let upgradeDataLocal = [];
 let upgradePurchases = {};
 let timer;
 
-// listeners
+// synchronous listeners
 
 document.getElementById("clicker").addEventListener("click", () => {
   counter = counter + 1;
   document.getElementById("counter").textContent = counter;
+  localStorage.setItem("counterStored", counter);
+});
+
+document.getElementById("resetButton").addEventListener("click", () => {
+  // this resets all progress back to 0
+  localStorage.clear();
+  upgradePurchases = {};
+  counter = 0;
+  document.getElementById("perSec").textContent = 0;
+  document.getElementById("counter").textContent = 0;
 });
 
 // actions
@@ -19,6 +29,7 @@ theAutomatedBit();
 // functions
 
 async function theAutomatedBit() {
+  // runs all the per second stuff
   const upgradeData = await getUpgrades();
   setUpgradeDataLocal(upgradeData);
 
@@ -100,16 +111,18 @@ function timerHandler() {
   counter = counter + n;
   document.getElementById("perSec").textContent = n;
   document.getElementById("counter").textContent = counter;
+  localStorage.setItem("counterStored", counter);
 }
 
-resetButton.addEventListener("click", () => {
-  // this resets all progress back to 0
-  localStorage.clear();
-  upgradePurchases = {};
-  counter = 0;
-  document.getElementById("perSec").textContent = 0;
-  document.getElementById("counter").textContent = 0;
-});
+function loadStorage() {
+  // I want to load the local storage back in if it exists
+  if (localStorage.getItem("counterStored")) {
+    counter = Number(localStorage.getItem("counterStored"));
+  }
+  if (localStorage.getItem("upgradesStored")) {
+    upgradePurchases = JSON.parse(localStorage.getItem("upgradesStored"));
+  }
+}
 
 document.getElementById("stopTimer").addEventListener("click", () => {
   //this is just to stop it running while I style things or just want it to stop. take it out later.
