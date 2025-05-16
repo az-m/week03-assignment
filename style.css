@@ -50,9 +50,9 @@ section {
 }
 
 .upgrade:hover {
-  border-color: #fff;
+  border-color: #ffcfcf;
   color: #000;
-  background-color: #fff;
+  background-color: #ffcfcf;
 }
 
 .upgrade_available {
