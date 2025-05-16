@@ -41,9 +41,12 @@ section {
   margin: 10px;
 }
 
-.upgrade {
-  border: 1px solid;
+.upgrade,
+.upgrade_available {
   padding: 5px 10px 5px 10px;
+  display: grid;
+  grid-template-columns: 75% 25%;
+  border: 1px solid;
 }
 
 .upgrade:hover {
@@ -53,15 +56,20 @@ section {
 }
 
 .upgrade_available {
-  border: 1px solid #fff;
+  border-color: #fff;
   color: #000;
   background-color: #fff;
-  padding: 5px 10px 5px 10px;
 }
 
 .upgrade_available:hover {
   border-color: #00ff00;
   background-color: #00ff00;
+}
+
+.upgrade div,
+.upgrade_available div {
+  font-size: 2rem;
+  text-align: center;
 }
 
 .button {

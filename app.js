@@ -19,10 +19,7 @@ document.getElementById("clicker").addEventListener("click", () => {
 document.getElementById("resetButton").addEventListener("click", () => {
   // this resets all progress back to 0
   localStorage.clear();
-  upgradePurchases = {};
-  counter = 0;
-  perSecHolder.textContent = 0;
-  counterHolder.textContent = 0;
+  location.reload();
 });
 
 // actions
@@ -32,13 +29,13 @@ theAutomatedBit();
 // functions
 
 async function theAutomatedBit() {
-  // runs all the per second stuff
   const upgradeData = await getUpgrades();
   setUpgradeDataLocal(upgradeData);
 
   makeUpgradeElements(upgradeData);
   upgradesClick();
 
+  // runs all the per second stuff
   timer = setInterval(timerHandler, 1000);
 }
 
@@ -58,11 +55,11 @@ function setUpgradeDataLocal(upgradeArr) {
 function makeUpgradeElements(upgradeArr) {
   // creates the div for each upgrade item, populates it with the name and cost, and adds it to the upgrades section in the dom
   upgradeArr.forEach((item, index) => {
-    const el = document.createElement("div");
-    el.setAttribute("class", "upgrade");
-    el.setAttribute("id", item.id);
+    const newDiv = document.createElement("div");
+    newDiv.setAttribute("class", "upgrade");
+    newDiv.setAttribute("id", item.id);
     const section = document.getElementById("upgrades");
-    section.appendChild(el);
+    section.appendChild(newDiv);
 
     const pName = document.createElement("p");
     const pCost = document.createElement("p");
@@ -70,10 +67,16 @@ function makeUpgradeElements(upgradeArr) {
     pName.textContent = item.name;
     pCost.textContent = item.cost;
 
+    // get the div we just added back from the DOM to add its content elements
     const div = document.getElementsByClassName("upgrade")[index];
+    const span = document.createElement("span");
 
-    div.appendChild(pName);
-    div.appendChild(pCost);
+    div.appendChild(span);
+
+    const getSpanFromDom = div.querySelector("span");
+
+    getSpanFromDom.appendChild(pName);
+    getSpanFromDom.appendChild(pCost);
   });
 }
 
@@ -84,7 +87,7 @@ function upgradesClick() {
     div.addEventListener("click", () => {
       let id = div.getAttribute("id");
 
-      //we can only purchase an item if we have enough 'cookies' so
+      // we can only purchase an item if we have enough 'cookies' so
       let price = upgradeDataLocal[id - 1].cost;
       if (counter >= price) {
         // did we already buy one of these? if not, add a new key for it otherwise increment number we own
@@ -125,6 +128,9 @@ function timerHandler() {
   // we want to show the user which upgrades are available - we're also checking this every second
   // I'll break this out into a separate function
   highlightPurchaseables();
+
+  // show how many of an upgrade is owned next to the upgrade item - I'll make a function for this too
+  showUpgradesCount();
 }
 
 function highlightPurchaseables() {
@@ -142,6 +148,19 @@ function highlightPurchaseables() {
   });
 }
 
+function showUpgradesCount() {
+  for (const [key, value] of Object.entries(upgradePurchases)) {
+    const div = document.createElement("div");
+    div.textContent = `${value}`;
+    const parent = document.getElementById(key);
+    if (parent.querySelector("div")) {
+      parent.querySelector("div").textContent = `${value}`;
+    } else {
+      parent.appendChild(div);
+    }
+  }
+}
+
 function loadStorage() {
   // I want to load the local storage back in if it exists
   if (localStorage.getItem("counterStored")) {
@@ -152,8 +171,8 @@ function loadStorage() {
   }
 }
 
-document.getElementById("stopTimer").addEventListener("click", () => {
-  //this is just to stop it running while I style things or just want it to stop. take it out later.
-  clearInterval(timer);
-  timer = null;
-});
+// document.getElementById("stopTimer").addEventListener("click", () => {
+//   //this is just to stop it running while I style things or just want it to stop. take it out later.
+//   clearInterval(timer);
+//   timer = null;
+// });
