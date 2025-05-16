@@ -4,11 +4,62 @@
   box-sizing: border-box;
 }
 
+body {
+  color: #fff;
+  background-color: #000;
+  font-family: "Courier New", Courier, monospace;
+  padding-top: 20px;
+}
+
+h1 {
+  font-size: 2rem;
+  padding-bottom: 10px;
+}
+
+section {
+  padding-top: 20px;
+}
+
+.cookieImg {
+  width: 100px;
+}
+
+.wrapper {
+  display: flexbox;
+  flex-direction: column;
+  justify-items: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+
 .clicker {
   font-size: 2em;
   margin: 10px;
 }
 
-section {
+.upgrade {
+  border: 1px solid;
+  padding: 5px 10px 5px 10px;
+}
+
+.upgrade:hover {
+  color: #000;
+  background-color: #fff;
+}
+
+.button {
+  border: 1px solid #fff;
+  padding: 5px;
   margin-top: 20px;
+  background-color: #000;
+  color: #fff;
+}
+
+.button:hover {
+  color: #000;
+  background-color: #fff;
 }

@@ -5,16 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Idle Clicker Game</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="data:," />
     <script src="app.js" defer></script>
   </head>
   <body onload="loadStorage()">
-    <h1>Idle Clicker Game Title</h1>
-    <button id="clicker" class="clicker">Click this button</button>
-    <section id="counter"></section>
-    <section id="perSec"></section>
-    <section id="upgrades"></section>
+    <div class="wrapper">
+      <h1>Click the cookie!</h1>
 
-    <button id="resetButton">Reset</button>
+      <img src="cookie.png" id="clicker" class="cookieImg" />
+      <div class="grid">
+        <section class="legend">Cookie Count:</section>
+        <section id="counter"></section>
+      </div>
+      <div class="grid">
+        <section class="legend">Cookies Per Second:</section>
+        <section id="perSec"></section>
+      </div>
+      <section id="upgrades"></section>
+
+      <button id="resetButton" class="button">RESET COUNT</button>
+    </div>
     <button id="stopTimer">Stop timer</button>
   </body>
 </html>
