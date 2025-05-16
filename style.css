@@ -47,8 +47,21 @@ section {
 }
 
 .upgrade:hover {
+  border-color: #fff;
   color: #000;
   background-color: #fff;
+}
+
+.upgrade_available {
+  border: 1px solid #fff;
+  color: #000;
+  background-color: #fff;
+  padding: 5px 10px 5px 10px;
+}
+
+.upgrade_available:hover {
+  border-color: #00ff00;
+  background-color: #00ff00;
 }
 
 .button {

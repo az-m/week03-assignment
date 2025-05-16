@@ -5,11 +5,14 @@ let upgradeDataLocal = [];
 let upgradePurchases = {};
 let timer;
 
+let counterHolder = document.getElementById("counter");
+let perSecHolder = document.getElementById("perSec");
+
 // synchronous listeners
 
 document.getElementById("clicker").addEventListener("click", () => {
   counter = counter + 1;
-  document.getElementById("counter").textContent = counter;
+  counterHolder.textContent = counter;
   localStorage.setItem("counterStored", counter);
 });
 
@@ -18,8 +21,8 @@ document.getElementById("resetButton").addEventListener("click", () => {
   localStorage.clear();
   upgradePurchases = {};
   counter = 0;
-  document.getElementById("perSec").textContent = 0;
-  document.getElementById("counter").textContent = 0;
+  perSecHolder.textContent = 0;
+  counterHolder.textContent = 0;
 });
 
 // actions
@@ -90,11 +93,17 @@ function upgradesClick() {
         } else {
           upgradePurchases[id] = 1;
         }
+
+        // take the cost of our purchase off the count total
+        counter = counter - price;
+        counterHolder.textContent = counter;
+
         // update our purchases in the local storage
         localStorage.setItem(
           "upgradesStored",
           JSON.stringify(upgradePurchases)
         );
+        localStorage.setItem("counterStored", counter);
       }
     });
   }
@@ -109,9 +118,28 @@ function timerHandler() {
     }
   }
   counter = counter + n;
-  document.getElementById("perSec").textContent = n;
-  document.getElementById("counter").textContent = counter;
+  perSecHolder.textContent = n;
+  counterHolder.textContent = counter;
   localStorage.setItem("counterStored", counter);
+
+  // we want to show the user which upgrades are available - we're also checking this every second
+  // I'll break this out into a separate function
+  highlightPurchaseables();
+}
+
+function highlightPurchaseables() {
+  upgradeDataLocal.forEach((item) => {
+    let el = document.getElementById(item.id);
+    if (item.cost <= counter) {
+      el.removeAttribute("class");
+      el.setAttribute("class", "upgrade_available");
+    } else {
+      if ((el.className = "upgrade_available")) {
+        el.removeAttribute("class");
+        el.setAttribute("class", "upgrade");
+      }
+    }
+  });
 }
 
 function loadStorage() {
