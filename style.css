@@ -49,21 +49,10 @@ section {
   border: 1px solid;
 }
 
-.upgrade:hover {
-  border-color: #ffcfcf;
-  color: #000;
-  background-color: #ffcfcf;
-}
-
 .upgrade_available {
   border-color: #fff;
   color: #000;
   background-color: #fff;
-}
-
-.upgrade_available:hover {
-  border-color: #00ff00;
-  background-color: #00ff00;
 }
 
 .upgrade div,
@@ -80,7 +69,23 @@ section {
   color: #fff;
 }
 
-.button:hover {
-  color: #000;
-  background-color: #fff;
+/* moved the hover styles into a media query because mouse hover isn't a thing on mobile
+and it just sticks to the focus element in a confusing way */
+
+@media (hover: hover) {
+  .upgrade:hover {
+    border-color: #ff8888;
+    color: #000;
+    background-color: #ff8888;
+  }
+
+  .upgrade_available:hover {
+    border-color: #00ff00;
+    background-color: #00ff00;
+  }
+
+  .button:hover {
+    color: #000;
+    background-color: #fff;
+  }
 }
