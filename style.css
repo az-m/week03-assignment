@@ -25,9 +25,12 @@ section {
 }
 
 .wrapper {
-  display: flexbox;
+  display: flex;
+  max-width: 375px;
+  margin: auto;
   flex-direction: column;
   justify-items: center;
+  align-items: center;
 }
 
 .grid {
